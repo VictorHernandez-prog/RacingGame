@@ -16,11 +16,11 @@ public class CatInput : MonoBehaviour
 
         if (Input.GetKey(KeyCode.A))
         {
-            inputVector.x -= 1;
+            inputVector.x = 1;
         }
         if (Input.GetKey(KeyCode.D))
         { 
-            inputVector.x = 1;
+            inputVector.x -= 1;
         }
 
         if (Input.GetKey(KeyCode.S))

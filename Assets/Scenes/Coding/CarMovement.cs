@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class CarMovement : MonoBehaviour
 {
-    public float accelerationFactor = 20.0f;
-    public float turnFactor = 1.0f;
-    public float boostMultiplier = 2.0f;   // Speed boost when Shift is held
-    public float maxSpeed = 10.0f;         // Normal top speed
-    public float maxBoostedSpeed = 18.0f;  // Top speed while boosting
+    public float accelerationFactor = 10.0f;  
+    public float turnFactor = 6.0f;           
+    public float boostMultiplier = 1.8f;      
+    public float maxSpeed = 12.0f;            
+    public float maxBoostedSpeed = 20.0f;     
+    public float drift = 0.5f;                
 
     float accelerationInput = 0f;
     float steeringInput = 0f;
@@ -23,14 +24,21 @@ public class CarMovement : MonoBehaviour
     {
         ApplyEngineForce();
         ApplySteering();
+        KillOrthogonalVelocity();
     }
 
     void ApplyEngineForce()
     {
-        // Base acceleration
-        float currentAcceleration = accelerationInput * accelerationFactor;
+        if (accelerationInput == 0)
+        {
+            rb.linearDamping = Mathf.Lerp(rb.linearDamping, 3.0f, Time.fixedDeltaTime * 3);
+        }
+        else
+        {
+            rb.linearDamping = 0;
+        }
+            float currentAcceleration = accelerationInput * accelerationFactor;
 
-        // Boost with Shift
         float currentMaxSpeed = maxSpeed;
         if (Input.GetKey(KeyCode.LeftShift))
         {
@@ -38,7 +46,6 @@ public class CarMovement : MonoBehaviour
             currentMaxSpeed = maxBoostedSpeed;
         }
 
-        // Apply force only if under max speed
         if (rb.linearVelocity.magnitude < currentMaxSpeed)
         {
             Vector2 engineForceVector = transform.up * currentAcceleration;
@@ -48,13 +55,24 @@ public class CarMovement : MonoBehaviour
 
     void ApplySteering()
     {
-        rotationAngle += steeringInput * turnFactor;
+        float speedFactor = rb.linearVelocity.magnitude / 8f;
+        speedFactor = Mathf.Clamp01(speedFactor);
+
+        rotationAngle += steeringInput * turnFactor * speedFactor;
         rb.MoveRotation(rotationAngle);
     }
 
     public void SetInputVector(Vector2 inputVector)
     {
-        steeringInput = inputVector.x;     // Left / Right
-        accelerationInput = inputVector.y; // Forward / Back
+        steeringInput = inputVector.x;     
+        accelerationInput = inputVector.y; 
+    }
+
+    void KillOrthogonalVelocity()
+    {
+        Vector2 forwardVelocity = transform.up * Vector2.Dot(rb.linearVelocity, transform.up);
+        Vector2 rightVelocity = transform.right * Vector2.Dot(rb.linearVelocity, transform.right);
+
+        rb.linearVelocity = forwardVelocity + rightVelocity * drift;
     }
 }
