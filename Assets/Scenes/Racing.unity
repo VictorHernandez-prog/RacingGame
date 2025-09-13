@@ -251,9 +251,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54f3a15094adb4b49aed14324a60dfef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CarMovement
-  accelerationFactor: 20
+  accelerationFactor: 5
   turnFactor: 1
-  rb: {fileID: 1376736168}
+  boostMultiplier: 2
+  maxSpeed: 10
+  maxBoostedSpeed: 18
 --- !u!114 &1376736172
 MonoBehaviour:
   m_ObjectHideFlags: 0
