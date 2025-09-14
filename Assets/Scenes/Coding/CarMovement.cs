@@ -7,7 +7,9 @@ public class CarMovement : MonoBehaviour
     public float boostMultiplier = 1.8f;      
     public float maxSpeed = 12.0f;            
     public float maxBoostedSpeed = 20.0f;     
-    public float drift = 0.5f;                
+    public float drift = 0.5f;
+    public float idleLinearDamping = 1.0f;
+    public float dampingSmoothness = 3.0f;
 
     float accelerationInput = 0f;
     float steeringInput = 0f;
@@ -24,14 +26,14 @@ public class CarMovement : MonoBehaviour
     {
         ApplyEngineForce();
         ApplySteering();
-        KillOrthogonalVelocity();
+        OrthogonalVelocity();
     }
 
     void ApplyEngineForce()
     {
         if (accelerationInput == 0)
         {
-            rb.linearDamping = Mathf.Lerp(rb.linearDamping, 3.0f, Time.fixedDeltaTime * 3);
+            rb.linearDamping = Mathf.Lerp(rb.linearDamping, idleLinearDamping, Time.fixedDeltaTime * dampingSmoothness);
         }
         else
         {
@@ -68,7 +70,7 @@ public class CarMovement : MonoBehaviour
         accelerationInput = inputVector.y; 
     }
 
-    void KillOrthogonalVelocity()
+    void OrthogonalVelocity()
     {
         Vector2 forwardVelocity = transform.up * Vector2.Dot(rb.linearVelocity, transform.up);
         Vector2 rightVelocity = transform.right * Vector2.Dot(rb.linearVelocity, transform.right);
