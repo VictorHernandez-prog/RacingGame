@@ -3,7 +3,6 @@ using UnityEngine;
 public class Camera : MonoBehaviour
 {
     private Vector3 offset = new Vector3 (0f, 0f, -10f);
-    private float smoothTime = 0.25f;
     private Vector3 velocity = Vector3.zero;
 
     [SerializeField] private Transform target;
@@ -17,7 +16,6 @@ public class Camera : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        Vector3 targetPosition = target.position + offset;
-        transform.position = Vector3.Lerp(transform.position, targetPosition, 0.1f);
+        transform.position = target.position + offset;
     }
 }

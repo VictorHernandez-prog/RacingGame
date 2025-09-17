@@ -77,4 +77,11 @@ public class CarMovement : MonoBehaviour
 
         rb.linearVelocity = forwardVelocity + rightVelocity * drift;
     }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Zombie"))
+        {
+            Destroy(other.gameObject);  // destroy the mouse
+        }
+    }
 }
