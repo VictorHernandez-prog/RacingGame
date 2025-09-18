@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class CarMovement : MonoBehaviour
 {
-    public float accelerationFactor = 10.0f;  
-    public float turnFactor = 6.0f;           
-    public float boostMultiplier = 1.8f;      
-    public float maxSpeed = 12.0f;            
-    public float maxBoostedSpeed = 20.0f;     
+    public float accelerationFactor = 10.0f;
+    public float turnFactor = 6.0f;
+    public float boostMultiplier = 1.8f;
+    public float maxSpeed = 12.0f;
+    public float maxBoostedSpeed = 20.0f;
     public float drift = 0.5f;
     public float idleLinearDamping = 1.0f;
     public float dampingSmoothness = 3.0f;
@@ -28,7 +28,11 @@ public class CarMovement : MonoBehaviour
         ApplySteering();
         OrthogonalVelocity();
     }
-
+    void Update()
+    {
+        Vector3 currentPlayerPosition = transform.position;
+        Debug.Log("Player's current position: " + currentPlayerPosition);
+    }
     void ApplyEngineForce()
     {
         if (accelerationInput == 0)
@@ -39,7 +43,7 @@ public class CarMovement : MonoBehaviour
         {
             rb.linearDamping = 0;
         }
-            float currentAcceleration = accelerationInput * accelerationFactor;
+        float currentAcceleration = accelerationInput * accelerationFactor;
 
         float currentMaxSpeed = maxSpeed;
         if (Input.GetKey(KeyCode.LeftShift))
@@ -66,8 +70,8 @@ public class CarMovement : MonoBehaviour
 
     public void SetInputVector(Vector2 inputVector)
     {
-        steeringInput = inputVector.x;     
-        accelerationInput = inputVector.y; 
+        steeringInput = inputVector.x;
+        accelerationInput = inputVector.y;
     }
 
     void OrthogonalVelocity()

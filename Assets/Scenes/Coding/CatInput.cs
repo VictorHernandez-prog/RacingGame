@@ -6,6 +6,9 @@ public class CatInput : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
+        Vector3 currentPlayerPosition = transform.position;
+        Debug.Log("Player's current position: " + currentPlayerPosition);
+
         CarMovement = GetComponent<CarMovement>();
     }
 

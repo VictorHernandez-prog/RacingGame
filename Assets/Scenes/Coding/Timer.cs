@@ -30,9 +30,9 @@ public class Timer : MonoBehaviour
         timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);        
     }
 
-    public void AddTime(float extraTime)
+    public void AddTime(float BonusTime)
     {
-        remainingTime += extraTime;
+        remainingTime += BonusTime;
     }
 
 }
